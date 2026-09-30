@@ -44,7 +44,6 @@ int main()
         scanf("%d", &choice);
         switch (choice)
         {
-            /* ================= MEMBER 1 ================= */
             case 1:
                 addTrain();
                 break;
@@ -57,7 +56,6 @@ int main()
             case 4:
                 displayPassengers(passengers, passengerCount);
                 break;
-            /* ================= MEMBER 2 ================= */
             case 5:
             {
                 int key;
@@ -139,7 +137,6 @@ int main()
             case 12:
                 seatAvailability();
                 break;
-            /* ================= MEMBER 3 ================= */
             case 13:
                 reserveTicket();
                 break;
@@ -155,7 +152,6 @@ int main()
             case 17:
                 saveData();
                 break;
-            /* ================= MEMBER 4 ================= */
             case 18:
                 demandPrediction();
                 break;
@@ -171,7 +167,6 @@ int main()
             case 22:
                 showProjectInfo();
                 break;
-            /* ================= EXIT ================= */
             case 0:
                 saveData();
                 printf("\n================================");
