@@ -1,70 +1,106 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-struct Passenger
+#include "railway.h"
+
+/* Reserve a railway ticket */
+void reserveTicket(void)
 {
-    int id;
-    char name[30];
-    int seat;
-    struct Passenger *next;
-};
-struct Passenger *head = NULL;
-char waitingName[5][30];
-int front = 0;
-int rear = 0;
-int nextId = 1;
-int nextSeat = 1;
-void bookTicket()
-{
-    struct Passenger *newPassenger;
-    char name[30];
-    printf("Enter passenger name: ");
-    scanf("%29s", name);
-    if (nextSeat <= 3)
+    int passengerId;
+    int trainNo;
+    int passengerIndex;
+    int trainIndex;
+    int i;
+
+    printf("\nEnter passenger ID: ");
+    scanf("%d", &passengerId);
+
+    /* Check passenger */
+    passengerIndex = findPassenger(passengerId);
+
+    if (passengerIndex == -1)
     {
-        newPassenger = malloc(sizeof(struct Passenger));
-        newPassenger->id = nextId;
-        strcpy(newPassenger->name, name);
-        newPassenger->seat = nextSeat;
-        newPassenger->next = head;
-        head = newPassenger;
-        printf("Ticket booked successfully.\n");
-        printf("Passenger ID: %d\n", nextId);
-        printf("Seat Number: %d\n", nextSeat);
-        nextId++;
-        nextSeat++;
+        printf("Passenger not found.\n");
+        printf("Please add the passenger first.\n");
+        return;
+    }
+
+    printf("Enter train number: ");
+    scanf("%d", &trainNo);
+
+    /* Check train */
+    trainIndex = findTrainLinear(trainNo);
+
+    if (trainIndex == -1)
+    {
+        printf("Train not found.\n");
+        return;
+    }
+
+    /* Check duplicate booking */
+    for (i = 0; i < ticketCount; i++)
+    {
+        if (tickets[i].passengerId == passengerId &&
+            tickets[i].trainNo == trainNo)
+        {
+            printf("Passenger already has a ticket for this train.\n");
+            return;
+        }
+    }
+
+    /* Check seat availability */
+    if (trains[trainIndex].availableSeats > 0)
+    {
+        if (ticketCount >= MAX_TICKETS)
+        {
+            printf("Ticket storage is full.\n");
+            return;
+        }
+
+        tickets[ticketCount].ticketId = nextTicketId++;
+        tickets[ticketCount].passengerId = passengerId;
+        tickets[ticketCount].trainNo = trainNo;
+
+        ticketCount++;
+
+        trains[trainIndex].availableSeats--;
+
+        printf("\n========== RESERVATION SUCCESSFUL ==========\n");
+        printf("Passenger ID : %d\n", passengerId);
+        printf("Train No     : %d\n", trainNo);
+        printf("Ticket ID    : %d\n",
+               tickets[ticketCount - 1].ticketId);
     }
     else
     {
-        if (rear < 5)
-        {
-            strcpy(waitingName[rear], name);
-            rear++;
-            printf("No seats available.\n");
-            printf("Added to waiting list.\n");
-        }
-        else
-        {
-            printf("Waiting list is full.\n");
-        }
+        printf("\nNo seats available on this train.\n");
+        printf("Passenger will be added to the waiting queue.\n");
+
+        addToWaitingQueue(passengerId, trainNo);
     }
 }
-void displayPassengers()
+
+/* Display all confirmed tickets */
+void displayTickets(void)
 {
-    struct Passenger *temp;
-    temp = head;
-    if (temp == NULL)
+    int i;
+
+    if (ticketCount == 0)
     {
-        printf("No passengers.\n");
+        printf("\nNo confirmed tickets.\n");
         return;
     }
-    printf("\nBooked Passengers\n");
-    while (temp != NULL)
+
+    printf("\n========== CONFIRMED TICKETS ==========\n");
+
+    printf("%-12s %-15s %-12s\n",
+           "Ticket ID",
+           "Passenger ID",
+           "Train No");
+
+    for (i = 0; i < ticketCount; i++)
     {
-        printf("ID: %d  Name: %s  Seat: %d\n",
-               temp->id,
-               temp->name,
-               temp->seat);
-        temp = temp->next;
+        printf("%-12d %-15d %-12d\n",
+               tickets[i].ticketId,
+               tickets[i].passengerId,
+               tickets[i].trainNo);
     }
 }
