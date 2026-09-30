@@ -1,181 +1,112 @@
 #include <stdio.h>
 #include "railway.h"
-void showMenu()
+static void displayMenu(void)
 {
-    printf("\n\n==============================================");
-    printf("\n     INTELLIGENT RAILWAY RESERVATION SYSTEM");
-    printf("\n==============================================\n");
-    printf("\n--- MEMBER 1 : TRAIN & PASSENGER MANAGEMENT ---");
-    printf("\n1.  Add Train");
-    printf("\n2.  Display Trains");
-    printf("\n3.  Register Passenger");
-    printf("\n4.  Display Passengers");
-    printf("\n\n--- MEMBER 2 : SEARCHING & SORTING ---");
-    printf("\n5.  Linear Search Train");
-    printf("\n6.  Binary Search Train");
-    printf("\n7.  Search Passenger");
-    printf("\n8.  Search Ticket");
-    printf("\n9.  Bubble Sort Trains");
-    printf("\n10. Selection Sort Trains");
-    printf("\n11. Insertion Sort Passengers");
-    printf("\n12. Seat Availability");
-    printf("\n\n--- MEMBER 3 : RESERVATION & WAITING LIST ---");
-    printf("\n13. Reserve Ticket");
-    printf("\n14. Display Bookings");
-    printf("\n15. Cancel Ticket");
-    printf("\n16. Display Waiting List");
-    printf("\n17. Save Data");
-    printf("\n\n--- MEMBER 4 : AI & ANALYSIS ---");
-    printf("\n18. AI Demand Prediction");
-    printf("\n19. System Statistics");
-    printf("\n20. Performance Analysis");
-    printf("\n21. Run System Tests");
-    printf("\n22. Project Information");
-    printf("\n\n0. Exit");
-    printf("\n\nEnter your choice: ");
+    printf("\n");
+    printf("===============================================\n");
+    printf("     INTELLIGENT RAILWAY RESERVATION SYSTEM\n");
+    printf("===============================================\n");
+    printf(" 1. Add Train\n");
+    printf(" 2. Display Trains\n");
+    printf(" 3. Add Passenger\n");
+    printf(" 4. Display Passengers\n");
+    printf(" 5. Linear Search - Train\n");
+    printf(" 6. Binary Search - Train\n");
+    printf(" 7. Search Passenger\n");
+    printf(" 8. Bubble Sort - Train Number\n");
+    printf(" 9. Selection Sort - Available Seats\n");
+    printf("10. Insertion Sort - Passenger ID\n");
+    printf("11. Reserve Ticket\n");
+    printf("12. Display Tickets\n");
+    printf("13. Cancel Ticket\n");
+    printf("14. Display Waiting Queue\n");
+    printf("15. Demand Prediction\n");
+    printf("16. System Statistics\n");
+    printf("17. Save Data\n");
+    printf("18. Load Data\n");
+    printf(" 0. Exit\n");
+    printf("===============================================\n");
 }
-int main()
+int main(void)
 {
     int choice;
+    printf("Welcome to the Intelligent Railway Reservation System!\n");
     loadData();
-    while (1)
-    {
-        showMenu();
-        scanf("%d", &choice);
-        switch (choice)
-        {
+    while (1) {
+        displayMenu();
+        printf("Enter your choice: ");
+        if (scanf("%d", &choice) != 1) {
+            printf("Invalid input. Please enter a number.\n");
+            while (getchar() != '\n') {
+            }
+            continue;
+        }
+        switch (choice) {
             case 1:
                 addTrain();
                 break;
             case 2:
-                displayTrains(trains, trainCount);
+                displayTrains();
                 break;
             case 3:
-                registerPassenger();
+                addPassenger();
                 break;
             case 4:
-                displayPassengers(passengers, passengerCount);
+                displayPassengers();
                 break;
             case 5:
-            {
-                int key;
-                int pos;
-                printf("\nEnter train number: ");
-                scanf("%d", &key);
-                pos = linearSearchTrain(trains,trainCount,key);
-                if (pos == -1)
-                {
-                    printf("\nTrain not found.\n");
-                }
-                else
-                {
-                    printf("\nTrain found!\n");
-                    printf("Train Number : %d\n",trains[pos].trainNo);
-                    printf("Train Name   : %s\n", trains[pos].name);
-                    printf("Seats        : %d\n",trains[pos].availableSeats);
-                }
+                searchTrainLinearMenu();
                 break;
-            }
+
             case 6:
-            {
-                int key;
-                int pos;
-                struct Train copy[MAX_TRAINS];
-                int i;
-                for (i = 0; i < trainCount; i++)
-                {
-                    copy[i] = trains[i];
-                }
-                bubbleSort(copy, trainCount);
-                printf("\nEnter train number: ");
-                scanf("%d", &key);
-                pos = binarySearchTrain(
-                    copy,
-                    trainCount,
-                    key
-                );
-                if (pos == -1)
-                {
-                    printf("\nTrain not found.\n");
-                }
-                else
-                {
-                    printf("\nTrain found!\n");
-                    printf("Train Number : %d\n", copy[pos].trainNo);
-                    printf("Train Name   : %s\n", copy[pos].name);
-                    printf("Seats        : %d\n", copy[pos].availableSeats);
-                }
+                searchTrainBinaryMenu();
                 break;
-            }
             case 7:
                 searchPassengerMenu();
                 break;
             case 8:
-                searchTicket();
+                sortTrainsBubble();
+                displayTrains();
                 break;
             case 9:
-                sortTrains();
+                sortTrainsBySeatsSelection();
+                displayTrains();
                 break;
             case 10:
-            {
-                struct Train copy[MAX_TRAINS];
-                int i;
-                for (i = 0; i < trainCount; i++)
-                {
-                    copy[i] = trains[i];
-                }
-                selectionSort(copy, trainCount);
-                printf("\nTrains sorted by available seats:\n");
-                displayTrains(copy, trainCount);
+                sortPassengersInsertion();
+                displayPassengers();
                 break;
-            }
             case 11:
-                insertionSort(passengers, passengerCount);
-                printf("\nPassengers sorted by ID:\n");
-                displayPassengers( passengers,passengerCount);
-                break;
-            case 12:
-                seatAvailability();
-                break;
-            case 13:
                 reserveTicket();
                 break;
-            case 14:
-                displayBookings();
+            case 12:
+                displayTickets();
                 break;
-            case 15:
+            case 13:
                 cancelTicket();
                 break;
+            case 14:
+                displayWaitingQueue();
+                break;
+            case 15:
+                predictDemand();
+                break;
             case 16:
-                displayWaitingList();
+                showStatistics();
                 break;
             case 17:
                 saveData();
                 break;
             case 18:
-                demandPrediction();
-                break;
-            case 19:
-                statistics();
-                break;
-            case 20:
-                performanceAnalysis();
-                break;
-            case 21:
-                testSystem();
-                break;
-            case 22:
-                showProjectInfo();
+                loadData();
                 break;
             case 0:
+                printf("\nSaving data before exit...\n");
                 saveData();
-                printf("\n================================");
-                printf("\nThank you for using the system!");
-                printf("\n================================\n");
+                printf("Thank you for using the system.\n");
                 return 0;
             default:
-                printf("\nInvalid choice. Please try again.\n");
+                printf("Invalid choice. Please try again.\n");
         }
     }
-    return 0;
 }
