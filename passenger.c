@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include "railway.h"
 
-/* Add a passenger */
 void addPassenger(void)
 {
     int i;
@@ -16,7 +15,6 @@ void addPassenger(void)
     printf("\nEnter passenger ID: ");
     scanf("%d", &passengerId);
 
-    /* Check duplicate passenger ID */
     for (i = 0; i < passengerCount; i++)
     {
         if (passengers[i].id == passengerId)
@@ -36,7 +34,6 @@ void addPassenger(void)
     printf("Passenger added successfully.\n");
 }
 
-/* Display all passengers */
 void displayPassengers(void)
 {
     int i;
