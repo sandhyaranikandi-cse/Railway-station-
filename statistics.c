@@ -1,94 +1,117 @@
 #include <stdio.h>
 #include "railway.h"
-void statistics()
+/* Demand calculation and prediction */
+void predictDemand(void)
 {
     int i;
-    int confirmed = 0;
-    int cancelled = 0;
-    int waiting = 0;
-    float totalFare = 0;
-    WaitNode *temp;
-    for (i = 0; i < bookingCount; i++)
+    int j;
+    int booked;
+    int waiting;
+    int expectedDemand;
+    double bookingPercentage;
+
+    if (trainCount == 0)
     {
-        if (bookings[i].status[0] == 'C' &&
-            bookings[i].status[1] == 'O')
+        printf("\nNo trains available for demand prediction.\n");
+        return;
+    }
+
+    printf("\n========== DEMAND PREDICTION ==========\n");
+
+    for (i = 0; i < trainCount; i++)
+    {
+        /* Calculate booked seats */
+        booked = trains[i].totalSeats -
+                 trains[i].availableSeats;
+
+        /* Count waiting passengers for this train */
+        waiting = 0;
+
+        for (j = 0; j < waitingCount; j++)
         {
-            confirmed++;
+            if (waitingList[j].trainNo == trains[i].no)
+            {
+                waiting++;
+            }
+        }
+
+        /* Simple demand calculation */
+        expectedDemand = booked + waiting;
+
+        /* Calculate booking percentage */
+        if (trains[i].totalSeats > 0)
+        {
+            bookingPercentage =
+                ((double)booked / trains[i].totalSeats) * 100.0;
         }
         else
         {
-            cancelled++;
+            bookingPercentage = 0.0;
+        }
+
+        printf("\nTrain %d - %s\n",
+               trains[i].no,
+               trains[i].name);
+
+        printf("Total Seats        : %d\n",
+               trains[i].totalSeats);
+
+        printf("Booked Seats       : %d\n",
+               booked);
+
+        printf("Waiting Passengers : %d\n",
+               waiting);
+
+        printf("Booking Percentage : %.2f%%\n",
+               bookingPercentage);
+
+        printf("Expected Demand    : %d\n",
+               expectedDemand);
+
+        /* Rule-based demand classification */
+        if (bookingPercentage >= 80.0 || waiting >= 5)
+        {
+            printf("Demand Level       : HIGH\n");
+        }
+        else if (bookingPercentage >= 50.0 || waiting >= 2)
+        {
+            printf("Demand Level       : MEDIUM\n");
+        }
+        else
+        {
+            printf("Demand Level       : LOW\n");
         }
     }
-    temp = front;
-    while (temp != NULL)
-    {
-        waiting++;
-        temp = temp->next;
-    }
+}
+
+/* Display overall project statistics */
+void showStatistics(void)
+{
+    int i;
+
+    int totalSeats = 0;
+    int availableSeats = 0;
+    int bookedSeats = 0;
+
+    /* Calculate total and available seats */
     for (i = 0; i < trainCount; i++)
     {
-        totalFare += trains[i].fare;
+        totalSeats += trains[i].totalSeats;
+        availableSeats += trains[i].availableSeats;
     }
+
+    /* Calculate booked seats */
+    bookedSeats = totalSeats - availableSeats;
+
     printf("\n========== SYSTEM STATISTICS ==========\n");
-    printf("Total Trains       : %d\n", trainCount);
-    printf("Total Passengers   : %d\n", passengerCount);
-    printf("Total Bookings     : %d\n", bookingCount);
-    printf("Confirmed Tickets  : %d\n", confirmed);
-    printf("Cancelled Tickets  : %d\n", cancelled);
-    printf("Waiting Passengers : %d\n", waiting);
-    if (trainCount > 0)
-        printf("Average Train Fare : %.2f\n",
-               totalFare / trainCount);
-}
-void performanceAnalysis()
-{
-    printf("\n========== PERFORMANCE ANALYSIS ==========\n");
-    printf("\nTrain Search          : O(n)");
-    printf("\nPassenger Search      : O(n)");
-    printf("\nTicket Search         : O(n)");
-    printf("\nBubble Sort           : O(n^2)");
-    printf("\nWaiting List Insert   : O(1)");
-    printf("\nWaiting List Display  : O(n)");
-    printf("\nFile Processing       : O(n)");
-    printf("\nSeat Availability     : O(n)\n");
-}
-void testSystem()
-{
-    printf("\n========== SYSTEM TESTING ==========\n");
-    printf("\n1. Train Management       : PASS");
-    printf("\n2. Passenger Management   : PASS");
-    printf("\n3. Ticket Reservation     : PASS");
-    printf("\n4. Ticket Cancellation    : PASS");
-    printf("\n5. Waiting Queue           : PASS");
-    printf("\n6. Train Searching        : PASS");
-    printf("\n7. Passenger Searching    : PASS");
-    printf("\n8. Ticket Searching       : PASS");
-    printf("\n9. Train Sorting           : PASS");
-    printf("\n10. Seat Availability     : PASS");
-    printf("\n11. File Handling         : PASS");
-    printf("\n12. Demand Prediction     : PASS\n");
-    printf("\nAll basic system tests completed.\n");
-}
-void showProjectInfo()
-{
-    printf("\n============================================\n");
-    printf(" INTELLIGENT RAILWAY RESERVATION SYSTEM\n");
-    printf("============================================\n");
-    printf("\nProgramming Language : C");
-    printf("\nData Structures      : Arrays, Linked List, Queue");
-    printf("\nAlgorithms           : Searching, Bubble Sort");
-    printf("\nFile Handling        : Text File");
-    printf("\nAI Extension         : Demand Forecasting");
-    printf("\n\nProject Modules:");
-    printf("\n1. Train Management");
-    printf("\n2. Passenger Management");
-    printf("\n3. Reservation");
-    printf("\n4. Cancellation");
-    printf("\n5. Waiting List");
-    printf("\n6. Searching");
-    printf("\n7. Sorting");
-    printf("\n8. AI Demand Prediction");
-    printf("\n9. Statistics");
-    printf("\n10. File Handling\n");
-}
+
+    printf("Total Trains       : %d\n",
+           trainCount);
+
+    printf("Total Passengers   : %d\n",
+           passengerCount);
+
+    printf("Confirmed Tickets  : %d\n",
+           ticketCount);
+
+    printf("Waiting
