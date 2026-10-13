@@ -2,10 +2,10 @@
 #include "railway.h"
 void addTrain(void)
 {
-    int number, seats, i;
-    if (trainCount >= MAX_TRAINS) {
-        printf("\nTrain storage is full.\n");
-        return;
+int number, seats, i;
+ if (trainCount >= MAX_TRAINS) {
+printf("\nTrain storage is full.\n");
+return;
     }
     printf("\nTrain number: ");
     if (scanf("%d", &number) != 1 || number <= 0) {
