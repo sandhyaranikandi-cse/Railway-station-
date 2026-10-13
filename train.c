@@ -2,49 +2,50 @@
 #include "railway.h"
 void addTrain(void)
 {
-    int i;
-    int trainNo;
-    if (trainCount >= MAX_TRAINS)
-    {
-        printf("\nTrain limit reached.\n");
+    int number, seats, i;
+    if (trainCount >= MAX_TRAINS) {
+        printf("\nTrain storage is full.\n");
         return;
     }
-    printf("\nEnter train number: ");
-    scanf("%d", &trainNo);
-    for (i = 0; i < trainCount; i++)
-    {
-        if (trains[i].no == trainNo)
-        {
-            printf("Train number already exists.\n");
+    printf("\nTrain number: ");
+    if (scanf("%d", &number) != 1 || number <= 0) {
+        printf("Enter a valid positive train number.\n");
+        while (getchar() != '\n') { }
+        return;
+    }
+    for (i = 0; i < trainCount; i++) {
+        if (trains[i].no == number) {
+            printf("This train number is already in use.\n");
             return;
         }
     }
-    trains[trainCount].no = trainNo;
-    printf("Enter train name: ");
+    printf("Train name: ");
     scanf(" %49[^\n]", trains[trainCount].name);
-    printf("Enter total seats: ");
-    scanf("%d", &trains[trainCount].totalSeats);
-    if (trains[trainCount].totalSeats <= 0)
-    {
-        printf("Seats must be greater than 0.\n");
+    printf("Total seats: ");
+    if (scanf("%d", &seats) != 1 || seats <= 0) {
+        printf("Seat count must be a positive number. Train was not added.\n");
+        while (getchar() != '\n') { }
         return;
     }
-    trains[trainCount].availableSeats =trains[trainCount].totalSeats;
+    trains[trainCount].no = number;
+    trains[trainCount].totalSeats = seats;
+    trains[trainCount].availableSeats = seats;
     trainCount++;
-    printf("Train added successfully.\n");
+    printf("Train added. All %d seats are currently available.\n", seats);
 }
 void displayTrains(void)
 {
     int i;
-    if (trainCount == 0)
-    {
-        printf("\nNo trains available.\n");
+    if (trainCount == 0) {
+        printf("\nNo trains are registered.\n");
         return;
     }
-    printf("\n========== TRAIN LIST ==========\n");
-    printf("%-10s %-30s %-12s %-12s\n", "Number","Name", "Total","Available");
-    for (i = 0; i < trainCount; i++)
-    {
-        printf("%-10d %-30s %-12d %-12d\n",  trains[i].no,trains[i].name,trains[i].totalSeats,trains[i].availableSeats);
+    printf("\n---------------- TRAIN DETAILS ----------------\n");
+    printf("%-12s %-30s %-12s %-12s\n",
+           "TRAIN NO", "TRAIN NAME", "TOTAL", "AVAILABLE");
+    for (i = 0; i < trainCount; i++) {
+        printf("%-12d %-30s %-12d %-12d\n",
+               trains[i].no, trains[i].name,
+               trains[i].totalSeats, trains[i].availableSeats);
     }
 }
