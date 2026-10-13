@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include "railway.h"
-
 int findTrainLinear(int trainNo)
 {
     int i;
@@ -10,10 +9,8 @@ int findTrainLinear(int trainNo)
             return i;
         }
     }
-
     return -1;
 }
-
 int findTrainBinary(int trainNo)
 {
     int left = 0;
@@ -25,17 +22,14 @@ int findTrainBinary(int trainNo)
         if (trains[mid].no == trainNo) {
             return mid;
         }
-
         if (trains[mid].no < trainNo) {
             left = mid + 1;
         } else {
             right = mid - 1;
         }
     }
-
     return -1;
 }
-
 int findPassenger(int passengerId)
 {
     int i;
@@ -45,10 +39,8 @@ int findPassenger(int passengerId)
             return i;
         }
     }
-
     return -1;
 }
-
 void sortTrainsBubble(void)
 {
     int i, j;
@@ -63,15 +55,12 @@ void sortTrainsBubble(void)
             }
         }
     }
-
     printf("\nTrains sorted by train number using Bubble Sort.\n");
 }
-
 void sortTrainsBySeatsSelection(void)
 {
     int i, j, maxIndex;
     Train temp;
-
     for (i = 0; i < trainCount - 1; i++) {
         maxIndex = i;
 
@@ -88,15 +77,12 @@ void sortTrainsBySeatsSelection(void)
             trains[maxIndex] = temp;
         }
     }
-
     printf("\nTrains sorted by available seats using Selection Sort.\n");
 }
-
 void sortPassengersInsertion(void)
 {
     int i, j;
     Passenger key;
-
     for (i = 1; i < passengerCount; i++) {
         key = passengers[i];
         j = i - 1;
@@ -105,22 +91,16 @@ void sortPassengersInsertion(void)
             passengers[j + 1] = passengers[j];
             j--;
         }
-
         passengers[j + 1] = key;
     }
-
     printf("\nPassengers sorted by ID using Insertion Sort.\n");
 }
-
 void searchTrainLinearMenu(void)
 {
     int trainNo, index;
-
     printf("\nEnter train number to search: ");
     scanf("%d", &trainNo);
-
     index = findTrainLinear(trainNo);
-
     if (index == -1) {
         printf("Train not found.\n");
     } else {
@@ -132,23 +112,17 @@ void searchTrainLinearMenu(void)
                trains[index].totalSeats);
     }
 }
-
 void searchTrainBinaryMenu(void)
 {
     int trainNo, index;
-
     if (trainCount == 0) {
         printf("\nNo trains available.\n");
         return;
     }
-
     sortTrainsBubble();
-
     printf("Enter train number to search: ");
     scanf("%d", &trainNo);
-
     index = findTrainBinary(trainNo);
-
     if (index == -1) {
         printf("Train not found.\n");
     } else {
@@ -160,16 +134,12 @@ void searchTrainBinaryMenu(void)
                trains[index].totalSeats);
     }
 }
-
 void searchPassengerMenu(void)
 {
     int passengerId, index;
-
     printf("\nEnter passenger ID to search: ");
     scanf("%d", &passengerId);
-
     index = findPassenger(passengerId);
-
     if (index == -1) {
         printf("Passenger not found.\n");
     } else {
