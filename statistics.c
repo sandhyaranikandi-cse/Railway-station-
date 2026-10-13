@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include "railway.h"
-/* Demand calculation and prediction */
 void predictDemand(void)
 {
     int i;
@@ -9,15 +8,12 @@ void predictDemand(void)
     int waiting;
     int expectedDemand;
     double bookingPercentage;
-
     if (trainCount == 0)
     {
         printf("\nNo trains available for demand prediction.\n");
         return;
     }
-
     printf("\n========== DEMAND PREDICTION ==========\n");
-
     for (i = 0; i < trainCount; i++)
     {
         /* Calculate booked seats */
@@ -35,9 +31,8 @@ void predictDemand(void)
             }
         }
 
-        /* Simple demand calculation */
+        /* Calculate expected demand */
         expectedDemand = booked + waiting;
-
         /* Calculate booking percentage */
         if (trains[i].totalSeats > 0)
         {
@@ -48,7 +43,6 @@ void predictDemand(void)
         {
             bookingPercentage = 0.0;
         }
-
         printf("\nTrain %d - %s\n",
                trains[i].no,
                trains[i].name);
@@ -58,6 +52,9 @@ void predictDemand(void)
 
         printf("Booked Seats       : %d\n",
                booked);
+
+        printf("Available Seats    : %d\n",
+               trains[i].availableSeats);
 
         printf("Waiting Passengers : %d\n",
                waiting);
@@ -88,10 +85,11 @@ void predictDemand(void)
 void showStatistics(void)
 {
     int i;
-
     int totalSeats = 0;
     int availableSeats = 0;
     int bookedSeats = 0;
+    int totalWaiting = 0;
+    double occupancyPercentage = 0.0;
 
     /* Calculate total and available seats */
     for (i = 0; i < trainCount; i++)
@@ -103,15 +101,41 @@ void showStatistics(void)
     /* Calculate booked seats */
     bookedSeats = totalSeats - availableSeats;
 
+    /* Calculate total waiting passengers */
+    totalWaiting = waitingCount;
+
+    /* Calculate overall occupancy percentage */
+    if (totalSeats > 0)
+    {
+        occupancyPercentage =
+            ((double)bookedSeats / totalSeats) * 100.0;
+    }
+
     printf("\n========== SYSTEM STATISTICS ==========\n");
 
-    printf("Total Trains       : %d\n",
+    printf("Total Trains          : %d\n",
            trainCount);
 
-    printf("Total Passengers   : %d\n",
+    printf("Total Passengers      : %d\n",
            passengerCount);
 
-    printf("Confirmed Tickets  : %d\n",
+    printf("Confirmed Tickets     : %d\n",
            ticketCount);
 
-    printf("Waiting
+    printf("Waiting Passengers    : %d\n",
+           totalWaiting);
+
+    printf("Total Seats           : %d\n",
+           totalSeats);
+
+    printf("Booked Seats          : %d\n",
+           bookedSeats);
+
+    printf("Available Seats       : %d\n",
+           availableSeats);
+
+    printf("Seat Occupancy        : %.2f%%\n",
+           occupancyPercentage);
+
+    printf("=======================================\n");
+}
