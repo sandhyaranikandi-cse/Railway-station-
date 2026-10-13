@@ -6,15 +6,12 @@ void saveData(void)
 {
     FILE *file;
     int i;
-
     file = fopen("railway_data.txt", "w");
-
     if (file == NULL)
     {
         printf("Unable to open data file.\n");
         return;
     }
-
     /*
      * Save counters and next ticket ID
      */
@@ -24,7 +21,6 @@ void saveData(void)
             ticketCount,
             waitingCount,
             nextTicketId);
-
     /* Save trains */
     for (i = 0; i < trainCount; i++)
     {
@@ -42,7 +38,6 @@ void saveData(void)
                 passengers[i].id,
                 passengers[i].name);
     }
-
     /* Save tickets */
     for (i = 0; i < ticketCount; i++)
     {
@@ -51,7 +46,6 @@ void saveData(void)
                 tickets[i].passengerId,
                 tickets[i].trainNo);
     }
-
     /* Save waiting queue */
     for (i = 0; i < waitingCount; i++)
     {
@@ -59,7 +53,6 @@ void saveData(void)
                 waitingList[i].passengerId,
                 waitingList[i].trainNo);
     }
-
     fclose(file);
 
     printf("Data saved successfully.\n");
@@ -79,7 +72,6 @@ void loadData(void)
         printf("Starting with empty system.\n");
         return;
     }
-
     /*
      * Load counters and ticket ID
      */
@@ -146,7 +138,6 @@ void loadData(void)
                &passengers[i].id,
                passengers[i].name);
     }
-
     /* Load tickets */
     for (i = 0; i < ticketCount; i++)
     {
@@ -156,7 +147,6 @@ void loadData(void)
                &tickets[i].passengerId,
                &tickets[i].trainNo);
     }
-
     /* Load waiting queue */
     for (i = 0; i < waitingCount; i++)
     {
@@ -165,7 +155,6 @@ void loadData(void)
                &waitingList[i].passengerId,
                &waitingList[i].trainNo);
     }
-
     fclose(file);
 
     printf("Data loaded successfully.\n");
