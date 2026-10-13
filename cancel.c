@@ -12,7 +12,6 @@ void cancelTicket(void)
 
     printf("\nEnter ticket ID to cancel: ");
     scanf("%d", &ticketId);
-
     /* Search for ticket */
     for (i = 0; i < ticketCount; i++)
     {
@@ -36,7 +35,6 @@ void cancelTicket(void)
             }
 
             ticketCount--;
-
             printf("\nTicket %d cancelled successfully.\n",
                    ticketId);
 
@@ -45,10 +43,8 @@ void cancelTicket(void)
              * The first waiting passenger can be promoted.
              */
             promoteWaitingPassenger(trainNo);
-
             return;
         }
     }
-
     printf("Ticket not found.\n");
 }
