@@ -7,20 +7,16 @@ void promoteWaitingPassenger(int trainNo)
     int i;
     int j;
     int trainIndex;
-
     trainIndex = findTrainLinear(trainNo);
-
     if (trainIndex == -1)
     {
         return;
     }
-
     /* Make sure a seat is available */
     if (trains[trainIndex].availableSeats <= 0)
     {
         return;
     }
-
     /*
      * Search from the front of the queue.
      * This maintains FIFO behavior.
@@ -51,7 +47,6 @@ void promoteWaitingPassenger(int trainNo)
             printf("\n========== WAITING PASSENGER PROMOTED ==========\n");
             printf("Passenger ID : %d\n",
                    waitingList[i].passengerId);
-
             printf("Train No     : %d\n", trainNo);
 
             printf("New Ticket ID: %d\n",
@@ -71,7 +66,6 @@ void promoteWaitingPassenger(int trainNo)
             return;
         }
     }
-
     printf("No waiting passenger found for train %d.\n",
            trainNo);
 }
